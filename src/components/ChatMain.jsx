@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
+import { useMessages } from '../providers/MessagesProvider';
 
-export default function ChatMain({ messages, feedback, onFeedback, darkMode }) {
+export default function ChatMain({ feedback, onFeedback, darkMode }) {
+  const { messages } = useMessages();
   // Helper for icon color
   const iconColor = darkMode ? 'text-white' : 'text-gray-700';
   const iconInactive = darkMode ? 'text-gray-400' : 'text-gray-400';

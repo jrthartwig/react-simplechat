@@ -1,8 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots, faStar } from '@fortawesome/free-regular-svg-icons';
+import { useConversations } from '../providers/ConversationsProvider';
 
-export default function ConversationList({ conversations, onSelect, selectedId, onNew, onMenu, darkMode }) {
+export default function ConversationList({ onSelect, selectedId, onNew, onMenu, darkMode }) {
+  const { conversations } = useConversations();
   return (
     <aside className={
       `w-72 flex flex-col ` +

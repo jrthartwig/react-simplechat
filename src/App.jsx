@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { chatApi } from './api';
+import { ConversationsProvider } from './providers/ConversationsProvider';
+import { MessagesProvider } from './providers/MessagesProvider';
 import ChatHeader from './components/ChatHeader';
 import ChatFooter from './components/ChatFooter';
 import ConversationList from './components/ConversationList';
@@ -27,9 +28,7 @@ const MOCK_MESSAGES = [
 
 export default function Chat() {
   const [darkMode, setDarkMode] = useState(false);
-  const [conversations, setConversations] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
-  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [model, setModel] = useState('gpt-4o');
   const [loading, setLoading] = useState(false);
@@ -37,9 +36,7 @@ export default function Chat() {
 
   // On mount, load mock data
   useEffect(() => {
-    setConversations(MOCK_CONVERSATIONS);
     setSelectedId(MOCK_CONVERSATIONS[0].id);
-    setMessages(MOCK_MESSAGES);
   }, []);
 
   useEffect(() => {
@@ -47,7 +44,6 @@ export default function Chat() {
       setLoading(true);
       chatApi.getMessages(selectedId)
         .then(msgs => {
-          setMessages(msgs);
           setLoading(false);
         });
     }
@@ -63,7 +59,6 @@ export default function Chat() {
       text: input,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
-    setMessages(prev => [...prev, newMsg]);
     setInput('');
     await chatApi.sendMessage(selectedId, input, model);
     setLoading(false);
@@ -74,9 +69,7 @@ export default function Chat() {
     if (!title) return;
     setLoading(true);
     const newConvo = await chatApi.createConversation(title);
-    setConversations(prev => [...prev, newConvo]);
     setSelectedId(newConvo.id);
-    setMessages([]);
     setLoading(false);
   };
 
@@ -89,10 +82,8 @@ export default function Chat() {
       if (window.confirm('Delete this conversation?')) {
         chatApi.deleteConversation(id)
           .then(() => {
-            setConversations(prev => prev.filter(c => c.id !== id));
             if (selectedId === id) {
               setSelectedId(null);
-              setMessages([]);
             }
           });
       }
@@ -104,37 +95,31 @@ export default function Chat() {
     chatApi.sendFeedback(msgId, type);
   };
 
+  // Wrap the app in the correct providers
   return (
-    <div className={
-      `flex h-screen ` +
-      (darkMode ? 'bg-gray-900' : 'bg-gray-50')
-    }>
-      <ConversationList
-        conversations={conversations}
-        onSelect={handleSelectConversation}
-        selectedId={selectedId}
-        onNew={handleNewConversation}
-        onMenu={handleMenuAction}
-        darkMode={darkMode}
-      />
-      <div className="flex-1 flex flex-col">
-        <ChatHeader darkMode={darkMode} setDarkMode={setDarkMode} />
-        <ChatMain
-          messages={messages}
-          feedback={feedback}
-          onFeedback={handleFeedback}
-          darkMode={darkMode}
-        />
-        <ChatFooter
-          onSend={handleSend}
-          input={input}
-          setInput={setInput}
-          loading={loading}
-          model={model}
-          setModel={setModel}
-          darkMode={darkMode}
-        />
-      </div>
-    </div>
+    <ConversationsProvider>
+      <MessagesProvider selectedId={selectedId}>
+        <div className={darkMode ? 'dark' : ''}>
+          <div className="flex flex-col h-screen">
+            <ChatHeader darkMode={darkMode} setDarkMode={setDarkMode} />
+            <div className="flex flex-1 min-h-0 min-w-0">
+              <ConversationList selectedId={selectedId} setSelectedId={setSelectedId} />
+              <ChatMain
+                selectedId={selectedId}
+                loading={loading}
+                setLoading={setLoading}
+                input={input}
+                setInput={setInput}
+                model={model}
+                setModel={setModel}
+                feedback={feedback}
+                setFeedback={setFeedback}
+              />
+            </div>
+            <ChatFooter input={input} setInput={setInput} loading={loading} />
+          </div>
+        </div>
+      </MessagesProvider>
+    </ConversationsProvider>
   );
 }
