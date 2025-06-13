@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
 import { useMessages } from '../providers/MessagesProvider';

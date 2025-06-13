@@ -1,4 +1,3 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots, faStar } from '@fortawesome/free-regular-svg-icons';
 import { useConversations } from '../providers/ConversationsProvider';
@@ -7,8 +6,8 @@ export default function ConversationList({ onSelect, selectedId, onNew, onMenu, 
   const { conversations } = useConversations();
   return (
     <aside className={
-      `w-72 flex flex-col ` +
-      (darkMode ? 'bg-gray-900 border-r border-gray-700' : 'bg-white border-r border-gray-200')
+      `w-72 flex flex-col flex-shrink-0 min-w-0` +
+      (darkMode ? ' bg-gray-900 border-r border-gray-700' : ' bg-white border-r border-gray-200')
     } style={{ fontFamily: 'Inter, IBM Plex Sans, Satoshi, sans-serif', fontSize: '0.97rem' }}>
       <div className={
         `flex items-center justify-between px-4 py-2 border-b ` +

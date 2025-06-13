@@ -1,7 +1,3 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons';
-
 export default function ChatFooter({ onSend, input, setInput, loading, model, setModel, darkMode }) {
   // Helper for icon color
   const iconColor = darkMode ? 'text-white' : 'text-gray-700';
