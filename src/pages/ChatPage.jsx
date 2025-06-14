@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useConversations } from '../providers/ConversationsProvider';
 import { MessagesProvider } from '../providers/MessagesProvider';
-import ChatHeader from '../components/ChatHeader';
 import ChatFooter from '../components/ChatFooter';
 import ConversationList from '../components/ConversationList';
 import ChatMain from '../components/ChatMain';
@@ -33,8 +32,8 @@ export default function ChatPage({ darkMode, setDarkMode }) {
 
   return (
     <div className={
-      `flex h-screen w-screen overflow-hidden ` +
-      (darkMode ? 'bg-gray-900' : 'bg-white')
+      `flex flex-1 min-h-0 min-w-0 overflow-hidden h-full` +
+      (darkMode ? ' bg-gray-900' : ' bg-white')
     } style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
       <ConversationList
         onSelect={setSelectedId}
@@ -43,9 +42,8 @@ export default function ChatPage({ darkMode, setDarkMode }) {
         onMenu={() => {}}
         darkMode={darkMode}
       />
-      <div className="flex-1 flex flex-col h-full">
-        <ChatHeader darkMode={darkMode} setDarkMode={setDarkMode} />
-        <div className="flex flex-col flex-1">
+      <div className="flex-1 flex flex-col min-h-0 min-w-0 h-full">
+        <div className="flex flex-col flex-1 min-h-0 min-w-0 h-full">
           <div className={
             `flex items-center px-6 pt-4 pb-2` +
             (darkMode ? ' bg-gray-900' : ' bg-white')
@@ -80,12 +78,14 @@ export default function ChatPage({ darkMode, setDarkMode }) {
             </div>
           </div>
           <MessagesProvider selectedId={selectedId}>
-            <ChatMain
-              feedback={feedback}
-              onFeedback={setFeedback}
-              darkMode={darkMode}
-              ChatFooterProps={{ input, setInput, loading, setLoading, model }}
-            />
+            <div className="flex flex-col flex-1 min-h-0 h-full">
+              <ChatMain
+                feedback={feedback}
+                onFeedback={setFeedback}
+                darkMode={darkMode}
+                ChatFooterProps={{ input, setInput, loading, setLoading, model }}
+              />
+            </div>
           </MessagesProvider>
         </div>
       </div>
