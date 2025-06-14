@@ -1,13 +1,12 @@
 export default function ChatFooter({ onSend, input, setInput, loading, model, setModel, darkMode }) {
   // Helper for icon color
-  const iconColor = darkMode ? 'text-white' : 'text-gray-700';
+  const iconColor = darkMode ? 'text-gray-200' : 'text-gray-700';
   return (
     <form className={
-      `flex gap-2 p-4 border-t items-center shadow-lg z-10 fixed bottom-0 left-80 right-0 ` +
-      (darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200') +
-      ' font-sans'
-    } style={{ fontFamily: 'Inter, IBM Plex Sans, Satoshi, sans-serif', minHeight: '56px', backdropFilter: 'blur(8px)' }} onSubmit={onSend}>
-      <div className="flex gap-2">
+      `flex gap-2 items-center w-full max-w-3xl mx-auto rounded-xl border shadow-sm px-4 py-2 mt-4 mb-2 ` +
+      (darkMode ? 'bg-gray-800 border-gray-700 text-gray-100' : 'bg-white border-gray-200 text-gray-900')
+    } style={{ fontFamily: 'Inter, IBM Plex Sans, Satoshi, sans-serif', minHeight: '48px' }} onSubmit={onSend}>
+      <div className="flex gap-2 items-center">
         {/* Image generation icon */}
         <div className="group relative flex flex-col items-center">
           <button
@@ -86,41 +85,25 @@ export default function ChatFooter({ onSend, input, setInput, loading, model, se
         </div>
       </div>
       <input
+        className={
+          `flex-1 border-none outline-none bg-transparent px-2 py-1 text-base ` +
+          (darkMode ? 'placeholder-gray-400 text-gray-100' : 'placeholder-gray-400 text-gray-900')
+        }
+        type="text"
+        placeholder="Type your message..."
         value={input}
         onChange={e => setInput(e.target.value)}
-        placeholder="Type your message..."
         disabled={loading}
-        className={
-          `flex-1 px-4 py-2 rounded border text-base shadow-sm ` +
-          (darkMode
-            ? 'border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400 focus:ring-blue-400 focus:outline-none'
-            : 'border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400 focus:ring-blue-400 focus:outline-none')
-        }
-        style={{ fontFamily: 'inherit' }}
       />
-      <select
-        className={
-          `ml-2 px-2 py-2 rounded border text-base shadow-sm ` +
-          (darkMode ? 'border-gray-600 bg-gray-700 text-gray-100' : 'border-gray-300 bg-gray-50 text-gray-900')
-        }
-        value={model}
-        onChange={e => setModel(e.target.value)}
-        style={{ fontFamily: 'inherit' }}
-      >
-        <option value="gpt-4o">gpt-4o</option>
-        <option value="gpt-4">gpt-4</option>
-        <option value="gpt-3.5">gpt-3.5</option>
-      </select>
       <button
         type="submit"
-        disabled={loading || !input.trim()}
         className={
-          `px-6 py-2 rounded font-semibold shadow-sm ` +
+          `ml-2 px-4 py-2 rounded-lg font-semibold transition-colors disabled:opacity-50 ` +
           (darkMode
-            ? 'bg-blue-600 text-white disabled:bg-gray-700'
-            : 'bg-blue-700 text-white disabled:bg-gray-400')
+            ? 'bg-gray-700 text-gray-200 hover:bg-gray-600'
+            : 'bg-gray-200 text-gray-700 hover:bg-gray-300')
         }
-        style={{ fontFamily: 'inherit' }}
+        disabled={loading || !input.trim()}
       >
         Send
       </button>

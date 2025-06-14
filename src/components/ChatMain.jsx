@@ -1,17 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faThumbsUp, faThumbsDown } from '@fortawesome/free-regular-svg-icons';
 import { useMessages } from '../providers/MessagesProvider';
+import ChatFooter from './ChatFooter';
 
-export default function ChatMain({ feedback, onFeedback, darkMode }) {
+export default function ChatMain({ feedback, onFeedback, darkMode, ChatFooterProps }) {
   const { messages } = useMessages();
   // Helper for icon color
   const iconColor = darkMode ? 'text-white' : 'text-gray-700';
   const iconInactive = darkMode ? 'text-gray-400' : 'text-gray-400';
   return (
     <main className={
-      `flex-1 flex flex-col gap-6 p-10 overflow-y-auto ` +
-      (darkMode ? 'bg-gray-900' : 'bg-gray-50') +
-      ' font-sans'
+      `flex-1 flex flex-col gap-6 px-6 py-10 overflow-y-auto font-sans ` +
+      (darkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900')
     } style={{ fontFamily: 'Inter, IBM Plex Sans, Satoshi, sans-serif' }}>
       {messages.map((msg, i) => (
         <div key={msg.id} className={`flex ${msg.user === 'You' ? 'justify-end' : 'justify-start'}`}>
@@ -107,6 +107,9 @@ export default function ChatMain({ feedback, onFeedback, darkMode }) {
           </div> {/* end message row */}
         </div> // end message container
       ))}
+      <div className="flex-shrink-0 mt-auto">
+        <ChatFooter {...ChatFooterProps} darkMode={darkMode} />
+      </div>
     </main>
   );
 }
