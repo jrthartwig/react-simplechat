@@ -1,10 +1,14 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCommentDots, faStar } from '@fortawesome/free-regular-svg-icons';
 import { useConversations } from '../providers/ConversationsProvider';
 
 export default function ConversationList({ onSelect, selectedId, onNew, onMenu, darkMode }) {
   const { conversations } = useConversations();
+  // For now, use a static summary for each conversation (could be improved to use real data)
+  const getSummary = (conv) => {
+    if (conv.id === 1) return 'A friendly welcome chat.';
+    if (conv.id === 2) return 'Q&A about your project.';
+    return 'Conversation summary.';
+  };
   return (
     <aside className={
       `w-64 flex flex-col flex-shrink-0 min-w-0 h-full pt-4 ` +
@@ -25,7 +29,7 @@ export default function ConversationList({ onSelect, selectedId, onNew, onMenu, 
             title="New chat"
             onClick={onNew}
           >
-            <FontAwesomeIcon icon={faCommentDots} className={darkMode ? "w-4 h-4 text-gray-400" : "w-4 h-4 text-gray-500"} />
+            <span className={darkMode ? "w-4 h-4 text-gray-400" : "w-4 h-4 text-gray-500"}>+</span>
           </button>
         </div>
       </div>
@@ -41,10 +45,9 @@ export default function ConversationList({ onSelect, selectedId, onNew, onMenu, 
             }
             onClick={() => onSelect(conv.id)}
           >
-            <div className="flex items-center gap-2 truncate">
-              <FontAwesomeIcon icon={faStar} className={darkMode ? "w-4 h-4 text-gray-700" : "w-4 h-4 text-gray-300"} />
-              <span className="truncate">{conv.title}</span>
-              <div className={darkMode ? "text-xs ml-2 text-gray-500" : "text-xs ml-2 text-gray-400"}>{conv.time}</div>
+            {/* Only show the summary text */}
+            <div className="truncate w-full text-left">
+              <span className={darkMode ? "text-xs text-gray-400" : "text-xs text-gray-500"}>{getSummary(conv)}</span>
             </div>
             <button
               className={

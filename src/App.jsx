@@ -44,54 +44,53 @@ export default function Chat() {
   // Wrap the app in the correct providers
   return (
     <ConversationsProvider>
-      <MessagesProvider selectedId={selectedId}>
-        <div className={darkMode ? 'dark bg-gray-900 text-gray-100' : ''}>
-          <div className="flex flex-col h-screen">
+      <MessagesProvider>
+        <div className={
+          `flex h-screen w-screen overflow-hidden ` +
+          (darkMode ? 'bg-gray-900' : 'bg-white')
+        }>
+          {/* Sidebar: fixed width, no resizing */}
+          <ConversationList
+            onSelect={setSelectedId}
+            selectedId={selectedId}
+            onNew={() => {}}
+            onMenu={() => {}}
+            darkMode={darkMode}
+          />
+          {/* Main chat area */}
+          <div className="flex-1 flex flex-col h-full">
             <ChatHeader darkMode={darkMode} setDarkMode={setDarkMode} />
-            <div className="flex flex-1 min-h-0 min-w-0 bg-inherit">
-              {/* Sidebar with conversations */}
-              <div className="flex flex-col w-64 flex-shrink-0 min-w-0 h-full">
-                <ConversationList selectedId={selectedId} setSelectedId={setSelectedId} darkMode={darkMode} />
+            {/* Model selector and chat main */}
+            <div className="flex flex-col flex-1">
+              {/* Model selector at top left of chat area */}
+              <div className={
+                `flex items-center px-6 pt-4 pb-2` +
+                (darkMode ? ' bg-gray-900' : ' bg-white')
+              }>
+                <label htmlFor="model-select" className={darkMode ? 'text-gray-300' : 'text-gray-700'} style={{ fontWeight: 500, marginRight: 8 }}>Model:</label>
+                <select
+                  id="model-select"
+                  value={model}
+                  onChange={e => setModel(e.target.value)}
+                  className={
+                    `rounded px-3 py-1 border focus:outline-none ` +
+                    (darkMode
+                      ? 'bg-gray-800 border-gray-700 text-gray-100'
+                      : 'bg-white border-gray-300 text-gray-900')
+                  }
+                  style={{ minWidth: 120 }}
+                >
+                  {MODEL_OPTIONS.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
               </div>
-              {/* Main chat area with model selector at the top left of chat area, to the right of the sidebar */}
-              <div className="flex flex-col flex-1 min-h-0 min-w-0">
-                <div className="flex items-center pt-4 pl-4 pb-2">
-                  <select
-                    className={
-                      `px-4 py-2 rounded-xl shadow border text-base font-semibold cursor-pointer ` +
-                      (darkMode ? 'bg-gray-800 border-gray-700 text-gray-100' : 'bg-white border-gray-200 text-gray-900')
-                    }
-                    value={model}
-                    onChange={e => setModel(e.target.value)}
-                  >
-                    {MODEL_OPTIONS.map(opt => (
-                      <option key={opt.value} value={opt.value} className={darkMode ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-900'}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <ChatMain
-                  selectedId={selectedId}
-                  loading={loading}
-                  setLoading={setLoading}
-                  input={input}
-                  setInput={setInput}
-                  model={model}
-                  setModel={setModel}
-                  feedback={feedback}
-                  setFeedback={setFeedback}
-                  ChatFooterProps={{
-                    input,
-                    setInput,
-                    loading,
-                    model,
-                    setModel,
-                    darkMode,
-                  }}
-                  darkMode={darkMode}
-                />
-              </div>
+              <ChatMain
+                feedback={feedback}
+                onFeedback={setFeedback}
+                darkMode={darkMode}
+                ChatFooterProps={{ input, setInput, loading, setLoading, model }}
+              />
             </div>
           </div>
         </div>
