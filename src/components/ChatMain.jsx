@@ -12,7 +12,7 @@ export default function ChatMain({ feedback, onFeedback, darkMode, ChatFooterPro
     <main className={
       `flex-1 flex flex-col gap-6 px-6 py-10 overflow-y-auto font-sans ` +
       (darkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900')
-    } style={{ fontFamily: 'Inter, IBM Plex Sans, Satoshi, sans-serif' }}>
+    } style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
       {messages.map((msg, i) => (
         <div key={msg.id} className={`flex ${msg.user === 'You' ? 'justify-end' : 'justify-start'}`}>
           <div className={`flex items-end gap-3 max-w-2xl w-full ${msg.user === 'You' ? 'flex-row-reverse' : ''}`}>
@@ -21,7 +21,7 @@ export default function ChatMain({ feedback, onFeedback, darkMode, ChatFooterPro
               {msg.user === 'You' ? (
                 <div className={
                   `w-8 h-8 rounded-full flex items-center justify-center border ` +
-                  (darkMode ? 'bg-blue-900 border-blue-800' : 'bg-blue-200 border-blue-300')
+                  (darkMode ? 'bg-blue-900 border-blue-800' : 'bg-slate-200 border-slate-300')
                 }>
                   {/* User icon: monochrome */}
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -48,22 +48,29 @@ export default function ChatMain({ feedback, onFeedback, darkMode, ChatFooterPro
               // User message as elevated card
               <div className={
                 `rounded-2xl shadow-lg px-8 py-6 w-full border ` +
-                (darkMode ? 'bg-blue-900 text-blue-100 border-blue-800' : 'bg-white border-blue-200')
+                (darkMode
+                  ? 'bg-blue-900 text-blue-100 border-blue-800'
+                  : 'bg-slate-100 text-slate-800 border-slate-200')
               } style={{ transition: 'box-shadow 0.2s', fontWeight: 500 }}>
                 <div className={
-                  `font-semibold mb-1 text-lg ` + (darkMode ? 'text-blue-200' : 'text-blue-700')
+                  `font-semibold mb-1 text-lg ` + (darkMode ? 'text-blue-200' : 'text-slate-700')
                 } style={{ fontWeight: 700 }}>{'You'}</div>
                 <div className="text-base whitespace-pre-line mb-2">{msg.text}</div>
                 {/* ...existing code for doc tag if needed... */}
               </div>
             ) : (
               // AI message: plain, no bubble, just text and controls
-              <div className="flex flex-col w-full">
+              <div className={
+                `rounded-2xl px-8 py-6 w-full border ` +
+                (darkMode
+                  ? 'bg-gray-800 text-blue-100 border-blue-800'
+                  : 'bg-slate-50 text-slate-700 border-slate-200')
+              }>
                 <div className={
-                  `font-semibold mb-1 text-lg ` + (darkMode ? 'text-blue-200' : 'text-blue-700')
-                } style={{ fontWeight: 700 }}>{'AI (gpt-4o)'}</div>
+                  `font-semibold mb-1 text-lg ` + (darkMode ? 'text-blue-200' : 'text-slate-700')
+                } style={{ fontWeight: 700 }}>{`AI (gpt-4o)`}</div>
+                <div className="text-base whitespace-pre-line mb-2">{msg.text}</div>
                 <div className={`flex items-center gap-2 mb-2 ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>
-                  <span className="text-base whitespace-pre-line flex-1">{msg.text}</span>
                   <div className="flex gap-1 items-center self-start">
                     {/* Copy icon (Font Awesome) */}
                     <button

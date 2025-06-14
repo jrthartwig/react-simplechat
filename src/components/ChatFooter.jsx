@@ -84,16 +84,21 @@ export default function ChatFooter({ onSend, input, setInput, loading, model, se
           <span className={`pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 text-xs text-white px-2 py-1 opacity-0 group-hover:opacity-100 z-20 transition-opacity duration-150 ${darkMode ? '' : 'bg-gray-900'}`}>Use a saved prompt</span>
         </div>
       </div>
-      <input
+      <textarea
         className={
-          `flex-1 border-none outline-none bg-transparent px-2 py-1 text-base ` +
+          `flex-1 border-none outline-none bg-transparent px-2 py-1 text-base resize-none max-h-40 min-h-[40px] leading-relaxed ` +
           (darkMode ? 'placeholder-gray-400 text-gray-100' : 'placeholder-gray-400 text-gray-900')
         }
-        type="text"
         placeholder="Type your message..."
         value={input}
         onChange={e => setInput(e.target.value)}
+        onInput={e => {
+          e.target.style.height = 'auto';
+          e.target.style.height = e.target.scrollHeight + 'px';
+        }}
         disabled={loading}
+        rows={1}
+        aria-label="Chat message input"
       />
       <button
         type="submit"
