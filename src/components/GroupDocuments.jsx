@@ -1,7 +1,7 @@
 import { useGroupWorkspace } from '../providers/GroupWorkspaceProvider';
 import { useState } from 'react';
 
-export default function GroupDocuments({ darkMode }) {
+export default function GroupDocuments({ darkMode, description = "Documents uploaded here are visible to all group members. Allowed extensions: txt, pdf, docx, xlsx, xls, csv, pptx, html, jpg, jpeg, png, bmp, tiff, tif, heif, md, json" }) {
   const { documents, loadingDocuments, activeGroupId } = useGroupWorkspace();
   const [filters, setFilters] = useState({
     fileName: '', author: '', keywords: '', abstract: '', classification: ''
@@ -26,7 +26,7 @@ export default function GroupDocuments({ darkMode }) {
         `mb-2 text-gray-500 text-sm ` +
         (darkMode ? 'dark:text-slate-400' : '')
       }>
-        Documents uploaded here are visible to all group members. Allowed extensions: txt, pdf, docx, xlsx, xls, csv, pptx, html, jpg, jpeg, png, bmp, tiff, tif, heif, md, json
+        {description}
       </div>
       <div className="flex flex-wrap gap-2 mb-2">
         <input
