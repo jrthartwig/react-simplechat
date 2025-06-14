@@ -1,10 +1,13 @@
 import { useGroupWorkspace } from '../providers/GroupWorkspaceProvider';
 
-export default function GroupPrompts() {
+export default function GroupPrompts({ darkMode }) {
   const { prompts, loadingPrompts, activeGroupId } = useGroupWorkspace();
   return (
     <div className="w-full">
-      <div className="mb-2 text-gray-500 text-sm">
+      <div className={
+        "mb-2 text-gray-500 text-sm " +
+        (darkMode ? 'dark:text-slate-400' : '')
+      }>
         Prompts available to all group members for this workspace.
       </div>
       <div className="overflow-x-auto rounded border border-slate-200 bg-white dark:bg-gray-900">

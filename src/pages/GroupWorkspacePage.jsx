@@ -11,10 +11,10 @@ export default function GroupWorkspacePage({ darkMode }) {
         `min-h-screen w-full px-0 py-0 flex flex-col items-stretch ` +
         (darkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900')
       } style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
-        <GroupHeader />
+        <GroupHeader darkMode={darkMode} />
         <div className="w-full max-w-6xl mx-auto mt-4">
-          <GroupSelector />
-          <GroupTabs />
+          <GroupSelector darkMode={darkMode} />
+          <GroupTabs darkMode={darkMode} />
         </div>
       </div>
     </GroupWorkspaceProvider>
