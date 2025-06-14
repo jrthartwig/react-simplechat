@@ -1,4 +1,3 @@
-import React from 'react';
 import { useConversations } from '../providers/ConversationsProvider';
 
 export default function ConversationList({ onSelect, selectedId, onNew, onMenu, darkMode }) {
